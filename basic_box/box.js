@@ -41,23 +41,16 @@ var ran =parseInt( Math.random()*991001);
 console.log(ran);
 camera.position.z = ran %10 +32;
 console.log(camera.position.z, ran);
-//till now we cannot see anything as we have not yet rendering anything
+//till now we cannot see anything as we have not yet rendered anything
 
 //this function will render.
 
 var animate = function(i){
     //this will create a loop that causes the renderer to draw the object.
-    //requestAnimationFrame( animate);
-    //i+=0.00000001;
     cube.material.color.setHex( Math.random()* 0x0ffffff );
     cube.position.x = 20*Math.sin((Date.now()%60000)/60000 * Math.PI * 2);
     cube.position.y = 20*Math.cos((Date.now()%60000)/60000 * Math.PI * 2);
-    //cube.position.z = i%500;
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
-    //cube.rotation.x += 0.01;
-    //cube.rotation.y += 0.1;
-    //cube.rotation.z += 0.01;
 }
-
 animate(0);
