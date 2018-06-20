@@ -1,5 +1,6 @@
 var scene, camera, renderer;
 var geometry, sphere, material;
+var controls;
 
 init();
 animate();
@@ -19,16 +20,18 @@ function init(){
     //geometry----
     //attributes can be radius, widthSegment, heightSegment, phiStart, phiLength,  thetaStart, thetaLength
     //here attributes are radius, widthSegment and heightsegment
-    geometry = new THREE.SphereGeometry(5,16,10);
+    geometry = new THREE.SphereGeometry(5,16,10);//Math.PI/2,2*Math.PI, 0 ,2*Math.PI);
 
     //there are various materials. Mostly we use :
     //1) basic (unlit)
     //2) lambert
     //3) phong
     //here we are using normal material with two attributes, i.e color and wireframe
-    material = new THREE.MeshNormalMaterial({color : 0xfff0, wireframe : true});
+    material = new THREE.MeshNormalMaterial({ wireframe : true});
 
     sphere = new THREE.Mesh(geometry, material);
+
+    controls = new THREE.OrbitControls(camera);
 
     scene.add(sphere);
 
@@ -37,7 +40,9 @@ function init(){
 
 function animate(){
     requestAnimationFrame(animate);
-    sphere.rotation.z = 20*Math.sin((Date.now()%60000)/60000 * Math.PI * 2);
-    sphere.rotation.y = 20*Math.cos((Date.now()%60000)/60000 * Math.PI * 2);
+    //sphere.rotation.z = 20*Math.sin((Date.now()%60000)/60000 * Math.PI * 2);
+    //sphere.rotation.y = 20*Math.cos((Date.now()%60000)/60000 * Math.PI * 2);
     renderer.render(scene,camera);
+    controls.update();
 }
+
