@@ -30,15 +30,15 @@ function init(){
 
     //Events
     THREEx.WindowResize(renderer, camera);
-    THREEx.FullScreen.bindKey({charCode : "a".charCodeAt(0) });
+    //THREEx.FullScreen.bindKey({charCode : "a".charCodeAt(0) });
 
     //Controls
     controls = new THREE.OrbitControls(camera, renderer.domElements);
 
     //Stats
-    /*stats = new Stats();
+    stats = new Stats();
     stats.showPanel(1);         //0: fps, 1: ms, 2: mb, 3+: custom
-    document.body.appendChild( stats.dom );*/
+    document.body.appendChild( stats.dom );
 
     //Light
     light1 = new THREE.PointLight(0xffffff,2.0);
@@ -72,10 +72,11 @@ function init(){
     {
         x: 0,y: 0,z: 0,
         color: "#3b472b", //will replace '#' with '0x'
-        color1: "#ffffff",
+        color1: "#000000",
         color2: "#ffffff",
         shininess: 40,
         material: "Phong",
+        flatShading: true,
         reset : function(){resetSphere();}
     };
 
@@ -88,41 +89,41 @@ function init(){
     //changing position of sphere manually
     sphereX.onChange(function(value){
         sphere.position.x = value;
-    });
+    })
 
     sphereY.onChange(function(value){
         sphere.position.y = value;
-    });
+    })
 
     sphereZ.onChange(function(value){
         sphere.position.y = value;
-    });
+    })
 
     //assigining parameters
     var sphereColor = gui.addColor( parameters, 'color').name('Color(Material)').listen();
     sphereColor.onChange(function(value){
         sphere.material.color.setHex(value.replace("#","0x"));
-    });
+    })
 
     var light1Color = gui.addColor( parameters, 'color1').name('Color(Light1)').listen();
     light1Color.onChange(function(value){
         light1.color.setHex(value.replace("#","0x"));
-    });
+    })
 
     var light2Color = gui.addColor( parameters, 'color2').name('Color(Light2)').listen();
     light2Color.onChange(function(value){
         light2.color.setHex(value.replace("#","0x"));
-    });
+    })
 
     var sphereShininess = gui.add( parameters, 'shininess').name('Shininess').max(50).min(1).step(1).listen();
     sphereShininess.onChange(function(value){
         sphere.shininess = value;
-    });
+    })
 
     var sphereMaterial = gui.add( parameters, 'material', [ "Basic", "Lambert", "Phong", "Wireframe" ] ).name('Material').listen();
     sphereMaterial.onChange(function(value){
         updateSphere();
-    });
+    })
 
     gui.add(parameters, 'reset').name('Reset');
 
@@ -143,7 +144,7 @@ function updateSphere(){
             break;
         }
         case "Phong" : {
-            newMat = new THREE.MeshPhongMaterial({color:0x3b472b, flatShading : true});
+            newMat = new THREE.MeshPhongMaterial({color:0x3b472b});
             break;
         }
         case "Wireframe" : {
@@ -152,13 +153,13 @@ function updateSphere(){
         }
     }
     sphere.material = newMat;
-    console.log(newMat);
     if(sphere.material.shininess){
         sphere.material.shininess = parameters.shininess;
     }
     if(sphere.material.color){
         sphere.material.color.setHex(parameters.color.replace("#","0x"));
     }
+    sphere.material.flatShading = true;
 }
 
 function resetSphere(){
@@ -166,10 +167,11 @@ function resetSphere(){
     parameters.y = 0;
     parameters.z = 0;
     parameters.color = "#3b472b";
-    parameters.color1 = "#ffffff";
+    parameters.color1 = "#000000";
     parameters.color2  = "#ffffff";
     parameters.shininess = 40;
     parameters.material = "Phong";
+    parameters.flatShading = true;
     updateSphere();
 }
 
@@ -177,5 +179,5 @@ function animate(){
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
     controls.update();
-    //stats.update();
+    stats.update();
 }
